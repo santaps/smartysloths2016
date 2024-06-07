@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% block styles %}
+    <link rel="stylesheet" href="{% static "core/css/result.css" %}">
+{% endblock %}
+
+{% block scripts %}
+    <script src="https://fastcdn.org/FileSaver.js/1.1.20151003/FileSaver.min.js"></script>
+    <script>
+        var localTimes = "{{ local_times }}";
+        var remoteTimes = "{{ remote_times }}";
+        var data = "{{ data }}";
+
+        function save() {
+            var text = $("#output-text")[0].innerText;
+            var blob = new Blob([text], {type: "text/plain;charset=utf-8"});
+            saveAs(blob, "output.txt");
+        }
+    </script>
+    <script src="{% static "core/js/result.js" %}"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="well vertical-center scrollable">
+        {% if mode != "Benchmark" %}
+            <p id="output-text">{{ text }}</p>
+        {% else %}
+            <p>Number of processed images: {{ number_of_images }}</p>
+
+            <h4>Remote mode:</h4>
+
+            <p>Processing time: <span id="remote-time"></span> ms</p>
+            <p>
+                <span>Avg: <span id="remote-avg-time"></span> ms; </span>
+                <span>SD: <span id="remote-sd-time"></span> ms</span>
+            </p>
+            <p>
+                <span>Min: <span id="remote-min-time"></span> ms (<span id="remote-min-time-index"></span>); </span>
+                <span>Max: <span id="remote-max-time"></span> ms (<span id="remote-max-time-index"></span>)</span>
+            </p>
+
+            <p>Exchanged data: <span id="exchanged-data"></span> B</p>
+            <p>
+                <span>Avg: <span id="avg-exchanged-data"></span> B; </span>
+                <span>SD: <span id="sd-exchanged-data"></span> B</span>
+            </p>
+            <p>
+                <span>Min: <span id="min-exchanged-data"></span> B (<span id="min-exchanged-data-index"></span>); </span>
+                <span>Max: <span id="max-exchanged-data"></span> B (<span id="max-exchanged-data-index"></span>)</span>
+            </p>
+            
+            <h4>Local mode:</h4>
+
+            <p>Processing time: <span id="local-time"></span> ms</p>
+            <p>
+                <span>Avg: <span id="local-avg-time"></span> ms; </span>
+                <span>SD: <span id="local-sd-time"></span> ms</span>
+            </p>
+            <p>
+                <span>Min: <span id="local-min-time"></span> ms (<span id="local-min-time-index"></span>); </span>
+                <span>Max: <span id="local-max-time"></span> ms (<span id="local-max-time-index"></span>)</span>
+            </p>
+        {% endif %}
+    </div>
+    {% if mode != "Benchmark" %}
+        <div class="text-right">
+            <button onclick="save()" class="btn btn-primary">Save</button>
+        </div>
+    {% endif %}
+
+{% endblock %}

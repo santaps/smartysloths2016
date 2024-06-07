@@ -1,0 +1,44 @@
+kind: ReplicationController
+apiVersion: v1
+metadata:
+    name: mysql-rc-slave
+spec:
+    replicas: 1
+    selector:
+        name: mysql-slave
+        role: mysql
+        environment: test
+    template:
+        spec:
+          containers:
+            - name: mysql-slave
+              image: gcr.io/mcc-2016-g17-p2/mysql-slave:latest
+              env:
+                - name: MYSQL_USER
+                  value: "mysql"
+                - name: MYSQL_PASSWORD
+                  value: "mysql"
+                - name: MYSQL_DATABASE
+                  value: "sample"
+                - name: MYSQL_ROOT_PASSWORD
+                  value: "root"
+                - name: MYSQL_REPLICATION_PASSWORD
+                  value: "repl"
+                - name: MYSQL_MASTER_SERVICE_HOST
+                  value: "mysql-svc-master"
+              ports:
+                - containerPort: 3306
+              volumeMounts:
+                  - name: mysql-storage-slave
+                    mountPath: /var/lib/mysql/data
+                    # mountPath: /test
+          volumes:
+          - name: mysql-storage-slave
+            gcePersistentDisk:
+                pdName: mysql-disk-2
+                fsType: ext4
+        metadata:
+            labels:
+                name: mysql-slave
+                role: mysql
+                environment: test

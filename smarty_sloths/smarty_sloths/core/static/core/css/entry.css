@@ -1,0 +1,17 @@
+.scrollable {
+    max-height: 310px;
+    overflow-y: auto;
+}
+
+.entryImage {
+    max-height: 500px;
+    margin-bottom: 50px;
+}
+
+#images {
+    display: None;
+}
+
+[class*="col-"] {
+    margin-bottom: 15px;
+}

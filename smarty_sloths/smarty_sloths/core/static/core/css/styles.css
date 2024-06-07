@@ -1,0 +1,35 @@
+.row {
+    text-align: center;
+}
+
+.vert-offset-top-2{
+    margin-top: 2em;
+}
+
+#upload-images {
+    display: none;
+}
+
+#mode a:hover {
+    cursor: pointer;
+}
+
+/* http://www.w3schools.com/howto/howto_css_loader.asp */
+.loader {
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #1a6ecc;
+    border-radius: 50%;
+    width: 15px;
+    height: 15px;
+    animation: spin 2s linear infinite;
+    display: inline-block;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+tr.clickable {
+    cursor: pointer;
+}

@@ -1,0 +1,25 @@
+kind: ReplicationController
+apiVersion: v1
+metadata:
+  name: django-rc
+spec:
+  replicas: 1
+  selector:
+    name: django-node
+    role: django
+    environment: test
+  template:
+    spec:
+      containers:
+        - name: django-node
+          image: gcr.io/mcc-2016-g17-p2/smarty_sloths:latest
+          env:
+            - name: DATABASE_HOST
+              value: "mysql-svc-master"
+          ports:
+            - containerPort: 8000
+    metadata:
+      labels:
+        name: django-node
+        role: django
+        environment: test

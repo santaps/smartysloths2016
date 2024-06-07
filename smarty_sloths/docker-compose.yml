@@ -1,0 +1,36 @@
+version: '2'
+services:
+  smarty_sloths:
+      # image: smarty_sloth:latests
+      build: .
+      volumes:
+        - .:/code
+      environment:
+        - DATABASE_HOST=mysql_master
+      ports: 
+        - "8000:8000"
+      depends_on:
+        - mysql_master
+
+  mysql_master:
+      image: gcr.io/mcc-2016-g17-p2/mysql-test:v11
+      environment:
+        - MYSQL_USER=mysql
+        - MYSQL_PASSWORD=mysql
+        - MYSQL_DATABASE=sample
+        - MYSQL_ROOT_PASSWORD=root
+        - MYSQL_REPLICATION_PASSWORD=repl
+      ports: 
+        - "3306:3306"
+  
+  msql_slave:
+      image: gcr.io/mcc-2016-g17-p2/mysql-slave-test:v2
+      environment:
+        - MYSQL_USER=mysql
+        - MYSQL_PASSWORD=mysql
+        - MYSQL_DATABASE=sample
+        - MYSQL_ROOT_PASSWORD=root
+        - MYSQL_REPLICATION_PASSWORD=repl
+        - MYSQL_MASTER_SERVICE_HOST=mysql_master
+      depends_on:
+        - mysql_master
